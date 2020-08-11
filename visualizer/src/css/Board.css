@@ -51,3 +51,13 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+@media screen and (prefers-color-scheme: dark) {
+	.square, input {
+		color: #f1f1f1;
+	}
+	.square {
+    background: #3b3b3b;
+    color: #f1f1f1;
+  }
+}

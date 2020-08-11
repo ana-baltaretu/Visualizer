@@ -1,36 +1,100 @@
 import React from 'react';
 import '../css/App.css';
+import '../css/Search-bar.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        {/* <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p> */}
-        <div className = "spacer">
-          
-        
-          <input type="text" placeholder="Search.."></input>
-          <div className = "content">
-          <a href="/board" class="active"> 
-            <button className = "button">Name1</button>
-          </a>
-           
-            <button className = "button">Name2</button>
-            <button className = "button">Name3</button>
-            <button className = "button">Name4</button>
-            <button className = "button">Name5</button>
-            <button className = "button">Name6</button>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: [
+        {
+          link: '/board',
+          title: 'Matrix',
+        }, 
+        {
+          link: '/stack',
+          title: 'Stack',
+        },
+        ]};
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <div>
+            <div className="container">
+              <section className="section">
+                            <List items={this.state.list} delete={this.removeItem} />
+              </section>
+            </div>
           </div>
-        </div>
-
-        
-        
-      </header>
-    </div>
-  );
+        </header>
+      </div>
+    );
+  }
 }
 
+class List extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filtered: []
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+    
+    componentDidMount() {
+    this.setState({
+      filtered: this.props.items
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      filtered: nextProps.items
+    });
+  }
+    
+    handleChange(e) {
+    let currentList = []; // Variable to hold the original version of the list
+    let newList = []; // Variable to hold the filtered list before putting into state
+
+    if (e.target.value !== "") { // If the search bar isn't empty
+      currentList = this.props.items; // Assign the original list to currentList
+      newList = currentList.filter(item => {  // Use .filter() to determine which items should be displayed, based on the search terms
+        const lc = item.title.toLowerCase(); // change current item to lowercase
+        const filter = e.target.value.toLowerCase(); // change search term to lowercase
+        return lc.includes(filter); // check to see if the current list item includes the search term
+      });
+    } else { // If the search bar is empty, set newList to original task list
+      newList = this.props.items; 
+    }
+        
+    this.setState({ // Set the filtered state based on what our rules added to newList
+      filtered: newList
+    });
+  }
+    
+    render() {
+        return (
+          <div>
+            <form action="" class="search-bar">
+              <input type="text" name="search" autocomplete="off" onChange={this.handleChange} placeholder="Search..."/>
+              <button class="search-btn" disabled>
+                <span>Search</span>
+              </button>
+            </form>
+            {/* <input type="text" className="input" name="search" onChange={this.handleChange} placeholder="Search..." /> */}
+              <ul>
+                  {this.state.filtered.map(item => (
+                    < a href={item.link} class="active" key={item.title}> 
+                      <button className = "button">{item.title} &nbsp;</button>
+                    </a>
+                  ))}
+            </ul>
+          </div>
+        )
+    }
+}
 export default App;
