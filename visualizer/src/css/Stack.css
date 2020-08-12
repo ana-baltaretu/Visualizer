@@ -1,0 +1,51 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.stack {
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 10vw;
+  max-width: 20vw;
+}
+
+.stack_Item {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  min-height: 4vh;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.stack_Item:hover  {
+  background: #ffff11;
+}
+
+
+@media screen and (prefers-color-scheme: dark) {
+	.stack, .stack_Item, input {
+		color: #f1f1f1;
+	}
+	.stack, .stack_Item {
+    background: #3b3b3b;
+    color: #f1f1f1;
+  }
+}

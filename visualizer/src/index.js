@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './css/index.css';
 import App from './js/App';
 import Board from './js/Board'
+import Stack from './js/Stack'
 import * as serviceWorker from './js/serviceWorker';
 
 ReactDOM.render(
@@ -14,6 +15,9 @@ ReactDOM.render(
       </Route>
       <Route path="/board">
         <Board />
+      </Route>
+      <Route path="/stack">
+        <Stack />
       </Route>
     </div>
   </Router>,

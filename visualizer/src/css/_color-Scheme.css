@@ -1,0 +1,18 @@
+.wallColor {
+  background-color: rgb(122, 72, 26);
+}
+
+
+@media screen and (prefers-color-scheme: dark) {
+	.content, .spacer, .App-header, body, input {
+		color: #f1f1f1;
+	}
+	.content, .spacer, .App-header, .button, body {
+    background: #171717;
+    color: #f1f1f1;
+  }
+
+  .button {
+    background: #2e2e2e;
+  }
+}

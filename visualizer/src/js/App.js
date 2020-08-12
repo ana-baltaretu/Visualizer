@@ -15,6 +15,10 @@ class App extends React.Component {
           link: '/stack',
           title: 'Stack',
         },
+        {
+          link: '/graph',
+          title: 'Graph',
+        },
         ]};
   }
 
@@ -79,16 +83,16 @@ class List extends React.Component {
     render() {
         return (
           <div>
-            <form action="" class="search-bar">
-              <input type="text" name="search" autocomplete="off" onChange={this.handleChange} placeholder="Search..."/>
-              <button class="search-btn" disabled>
+            <form action="" className="search-bar">
+              <input type="text" name="search" autoComplete="off" onChange={this.handleChange} placeholder="Search..."/>
+              <button className="search-btn" disabled>
                 <span>Search</span>
               </button>
             </form>
             {/* <input type="text" className="input" name="search" onChange={this.handleChange} placeholder="Search..." /> */}
               <ul>
                   {this.state.filtered.map(item => (
-                    < a href={item.link} class="active" key={item.title}> 
+                    < a href={item.link} className="active" key={item.title}> 
                       <button className = "button">{item.title} &nbsp;</button>
                     </a>
                   ))}
