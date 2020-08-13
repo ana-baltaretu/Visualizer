@@ -37,11 +37,9 @@ body {
   height: auto;
   width: auto;
   align-content: center;
-  padding: 5vmin;
   margin-left: auto;
   margin-right: auto;
-  min-width: 10vw;
-  max-width: 80vw;
+  max-width: 52vw;
 }
 
 .input-text {

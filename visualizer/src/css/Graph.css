@@ -1,0 +1,46 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+.graphBox {
+  border: solid black 3px;
+  border-radius: 1vh;
+  padding: 10px;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+.graph{
+  padding: 1px;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #999;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 3vmin;
+  width: 3vmin;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+}
+
+.circle:hover  {
+  background: #ffff11;
+}
+
+
+@media screen and (prefers-color-scheme: dark) {
+	.circle, input {
+		color: #f1f1f1;
+	}
+	.circle {
+    background: #3b3b3b;
+    color: #f1f1f1;
+  }
+}

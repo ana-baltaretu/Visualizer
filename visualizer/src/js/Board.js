@@ -82,8 +82,9 @@ class Board extends React.Component {
     return RectangularBoard;
   }
 
-  render() {
+  
 
+  render() {
 
     return (
       <div>
