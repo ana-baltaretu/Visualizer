@@ -2,16 +2,11 @@ body {
   font: 14px "Century Gothic", Futura, sans-serif;
 }
 
-.graphBox {
+.graph {
+  background-color: white;
   border: solid black 3px;
   border-radius: 1vh;
   padding: 10px;
-  min-width: 300px;
-  min-height: 300px;
-}
-
-.graph{
-  padding: 1px;
 }
 
 .circle {
@@ -22,8 +17,6 @@ body {
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 3vmin;
-  width: 3vmin;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;

@@ -6,7 +6,7 @@ import App from './js/App';
 import Board from './js/Board'
 import Stack from './js/Stack'
 import * as serviceWorker from './js/serviceWorker';
-import GraphBox from './js/GraphBox';
+import Graph from './js/Graph';
 
 ReactDOM.render(
   <Router>
@@ -21,7 +21,7 @@ ReactDOM.render(
         <Stack />
       </Route>
       <Route path="/graph">
-        <GraphBox />
+        <Graph />
       </Route>
     </div>
   </Router>,
