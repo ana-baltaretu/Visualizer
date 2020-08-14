@@ -2,6 +2,10 @@
   background-color: rgb(122, 72, 26);
 }
 
+.startColor {
+  background-color: rgb(15, 150, 22);
+}
+
 
 @media screen and (prefers-color-scheme: dark) {
 	.content, .spacer, .App-header, body, input {

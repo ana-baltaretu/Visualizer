@@ -1,14 +1,20 @@
 import React from 'react';
 import '../css/Board.css';
+import '../css/Slider.css';
 import '../css/_color-Scheme.css';
 
 global.index = 0;
 
 let isDrawing = false;
+let lastLocation = -1;
 
 function startDrawing(event) {
   event.preventDefault();
-  isDrawing = true;
+  let d = document.getElementById("typeOfDrawing");
+  console.log(d.checked);
+  if (d.checked === false) {
+    isDrawing = true;
+  }
 }
 
 function stopDrawing(event) {
@@ -21,10 +27,22 @@ class Square extends React.Component {
   render() {
     function startSquareColor(event) {
       event.preventDefault();
-      if (event.target.classList.contains("wallColor"))
-        event.target.classList.remove("wallColor");
-      else event.target.classList.add("wallColor");
-      isDrawing = true;
+      let d = document.getElementById("typeOfDrawing");
+      console.log(d.checked);
+      if (d.checked === false) { /// DRAW WALLS
+        isDrawing = true;
+        if (event.target.classList.contains("wallColor"))
+          event.target.classList.remove("wallColor");
+        else event.target.classList.add("wallColor");
+      } else { /// DRAW STARTING POINT
+        if (event.target.classList.contains("wallColor"))
+          event.target.classList.remove("wallColor");
+        if (lastLocation !== -1) {
+          document.getElementById(lastLocation).classList.remove("startColor");
+        }
+        lastLocation = event.target.id;
+        event.target.classList.add("startColor");
+      }
     }
 
     function changeSquareColor(event) {
@@ -93,6 +111,15 @@ class Board extends React.Component {
           <input className = "input-text" type="number" autoComplete="off" placeholder="M"/>
           <button>Generate</button>
         </div>
+        <div>
+          Draw walls
+          <label className="switch">
+            <input id = "typeOfDrawing" type="checkbox"></input>
+            <span className="slider round"></span>
+          </label>
+          Draw starting point
+        </div>
+        
         
         <div className = "board" onMouseUp = {stopDrawing} onMouseDown={startDrawing}>
         {this.renderRectangularBoard(25,35)}

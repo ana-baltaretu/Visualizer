@@ -47,8 +47,9 @@ class Graph extends React.Component {
 
   componentDidMount() {
 
-    var graph = document.getElementById("graph");
+    
 
+    var graph = document.getElementById("graph");
     
     graph.style.minHeight = 300 + "px";
     graph.style.minWidth = 300 + "px";
@@ -64,6 +65,28 @@ class Graph extends React.Component {
     // console.log(topOffset + " " + leftOffset);
     // console.log(height + " " + width);
     // console.log(graph.children);
+
+    function sqr(x) {
+      return x * x;
+    }
+
+    function checkSpawn(circle1, circle2) {
+        let x1 = circle1.style.top;
+        let y1 = circle1.style.left;
+        let x2 = circle2.style.top;
+        let y2 = circle2.style.left;
+
+        x1 = x1.substring(0, x1.length - 2);
+        y1 = y1.substring(0, y1.length - 2);
+        x2 = x2.substring(0, x2.length - 2);
+        y2 = y2.substring(0, y2.length - 2);
+        console.log(x1 + " " + y1 + " " + x2 + " " + y2);
+        let dx = sqr(x1 - x2);
+        let dy = sqr(y1 - y2);
+        let d = Math.sqrt(dx + dy); // distance
+        return circleRadius - d;
+    }
+
     var nodes = document.getElementById("graph").children;
     for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
@@ -71,10 +94,30 @@ class Graph extends React.Component {
       circle.style.width = circleRadius + "px";
       circle.style.height = circleRadius + "px";
       circle.style.position = "absolute";
-      circle.style.left = leftOffset + Math.random() * spawnWidth + "px";
-      circle.style.top = topOffset + Math.random() * spawnHeight + "px";
+      let ok = 0;
+      while (ok === 0) {
+        ok = 1;
+        circle.style.left = leftOffset + Math.random() * spawnWidth + "px";
+        circle.style.top = topOffset + Math.random() * spawnHeight + "px";
+        for (var j = 0; j < i; j++) {
+          var neighbour = nodes[j];
+          var circle2 = neighbour.children[0];
+          
+          let diff = checkSpawn(circle, circle2);
+          console.log(circle.offsetTop + " " + circle.offsetLeft);
+          console.log(circle2.offsetTop + " " + circle2.offsetLeft);
+          console.log(diff);
+          if (diff > 0) {
+            ok = 0;
+          }
+        }
+      }
+      
       // console.log(circle.offsetTop + " " + circle.offsetLeft);
     }
+
+    
+
   }
 
   renderCircle(j) {
@@ -95,6 +138,8 @@ class Graph extends React.Component {
 
     return (
       <div>
+        {/* MAKE SURE TO LIMIT THE NUMBER OF ALLOWED NODES OR GENERATING THEM WILL CRASH */}
+        {/* 70 nodes takes a while */}
         <div id = "graph" className = "graph" onMouseDown = {startMoving} onMouseUp = {stopMoving} onMouseLeave = {stopMoving}>
         {this.renderRow(10)}
         </div>
