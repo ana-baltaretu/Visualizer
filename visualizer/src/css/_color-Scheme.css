@@ -6,6 +6,10 @@
   background-color: rgb(15, 150, 22);
 }
 
+.pathColor {
+  background-color: rgb(248, 218, 161);
+}
+
 
 @media screen and (prefers-color-scheme: dark) {
 	.content, .spacer, .App-header, body, input {
