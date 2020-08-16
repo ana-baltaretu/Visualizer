@@ -9,6 +9,7 @@ let isDrawing = false;
 let lastLocation = -Infinity;
 global.N = 20;
 global.M = 20;
+global.timeout = 100;
 
 let dx = [-1, 0, 1, 0];
 let dy = [0, -1, 0, 1];
@@ -40,14 +41,15 @@ class Square extends React.Component {
           event.target.classList.remove("pathColor");
         if (event.target.classList.contains("wallColor") )
           event.target.classList.remove("wallColor");
-        else if (event.target.classList.contains("startColor") == false)
+        else if (event.target.classList.contains("startColor") === false)
           event.target.classList.add("wallColor");
+        event.target.innerText = "";
       } else { /// DRAW STARTING POINT
         if (event.target.classList.contains("wallColor"))
           event.target.classList.remove("wallColor");
         if (event.target.classList.contains("pathColor"))
           event.target.classList.remove("pathColor");
-        
+        event.target.innerText = "";
         if (lastLocation !== -Infinity) {
           document.getElementById(lastLocation).classList.remove("startColor");
         }
@@ -60,9 +62,12 @@ class Square extends React.Component {
     function changeSquareColor(event) {
       event.preventDefault();
       if (isDrawing === true) {
+        if (event.target.classList.contains("pathColor"))
+          event.target.classList.remove("pathColor");
         if (event.target.classList.contains("wallColor"))
           event.target.classList.remove("wallColor");
-        else event.target.classList.add("wallColor");
+        else if (event.target.classList.contains("startColor") === false) event.target.classList.add("wallColor");
+        event.target.innerText = "";
         //console.log("clicked " + event.target.id);
       }
     }
@@ -75,6 +80,7 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
+
   renderSquare(i, j) {
     return <Square key = {i + j}/>;
   }
@@ -98,7 +104,6 @@ class Board extends React.Component {
     }
     return RectangularBoard;
   }
-  
 
   render() {
 
@@ -109,14 +114,18 @@ class Board extends React.Component {
     function dfs(nodeId) {
       /** LINE START FROM 0, COL START FROM 1 cuz it doesn't like it otherwise for some reason*/
       var node = document.getElementById(nodeId);
-      console.log("this nodeId = " + nodeId);
-      console.log("this node = " + node.classList);
+      //console.log("this nodeId = " + nodeId);
+      //console.log("this node = " + node.classList);
       if (!node.classList.contains("startColor"))
+      {
         node.classList.add("pathColor");
+        node.classList.add("currentEdgeColor");
+      }
+        
       var line = parseInt(node.parentElement.id);
       var col = parseInt(node.id - line * global.M);
-      console.log("line = " + line);
-      console.log("col = " + col);
+      //console.log("line = " + line);
+      //console.log("col = " + col);
       setTimeout(function(){
         for (var d = 0; d < 4; d++) {
           var nextLine = line + dx[d];
@@ -127,23 +136,38 @@ class Board extends React.Component {
           if (isInside(nextLine, nextCol) === true) {
             var nextNodeId = nextLine * global.M + nextCol;
             var nextNode = document.getElementById(nextNodeId);
-            console.log("next nodeId = " + nextNodeId);
-            console.log("next node = " + nextNode.classList);
+            //console.log("next nodeId = " + nextNodeId);
+            //console.log("next node = " + nextNode.classList);
             if (nextNode.classList.contains("startColor") === false 
               && nextNode.classList.contains("wallColor") === false 
               && nextNode.classList.contains("pathColor") === false) {
+              let showDistance = document.getElementById("showDistance").checked;
+              if (showDistance === true) {
+                nextNode.style.fontSize = "8px";
+                nextNode.style.color = "black";
+                nextNode.innerText = parseInt(node.innerText) + 1;
+                console.log(nextNode.innerText);
+              }
               dfs(nextNodeId);
             }
           }
         }
-      }, 100);
+        if (node.classList.contains("currentEdgeColor")) {
+          node.classList.remove("currentEdgeColor");
+        }
+      }, global.timeout);
     }
 
     function clearPaths() {
-      for (var ind = 0; ind <= global.N * global.M; ind++) {
+      for (var ind = 1; ind <= global.N * global.M; ind++) {
         var node = document.getElementById(ind);
-        if (node.classList.contains("pathColor"))
-          node.classList.remove("pathColor");
+        if (node !== null) {
+          if (node.classList.contains("pathColor"))
+            node.classList.remove("pathColor");
+          if (node.textContent !== '')
+            node.textContent = '';
+          console.log(node.textContent);
+        }
       }
     }
 
@@ -152,17 +176,24 @@ class Board extends React.Component {
        * FIX TO WORK LIKE DFS NOT BFS (use stack i guess)
        * MAKE BFS
        */
-      clearPaths();
-      if (lastLocation != -1) {
-          dfs(lastLocation);
+      if (lastLocation !== -Infinity) {
+        clearPaths();
+        var node = document.getElementById(lastLocation);
+        let showDistance = document.getElementById("showDistance").checked;
+        if (showDistance === true) {
+          node.innerText = parseInt(0);
+          node.style.fontSize = "8px";
+          node.style.color = "black";
+        }
+        dfs(lastLocation);
       }
     }
 
     return (
       <div>
         <div>Input size: 
-          <input className = "input-text" type="number" autoComplete="off" placeholder="N"/>
-          <input className = "input-text" type="number" autoComplete="off" placeholder="M"/>
+          <input id = "inputN" className = "input-text" type="number" autoComplete="off" placeholder="N"/>
+          <input id = "inputM" className = "input-text" type="number" autoComplete="off" placeholder="M"/>
           <button>Generate</button>
         </div>
         <div>
@@ -173,11 +204,18 @@ class Board extends React.Component {
           </label>
           Draw starting point
         </div>
+        <div>
+        No distance
+          <label className="switch">
+            <input id = "showDistance" type="checkbox"></input>
+            <span className="slider round"></span>
+          </label>
+          Distance 
+        </div>
         <button onClick = {startDfs}>Run</button>
         <button onClick = {clearPaths}>Clear</button>
         
-        
-        <div className = "board" onMouseUp = {stopDrawing} onMouseDown={startDrawing}>
+        <div id = "matrix" className = "board" onMouseUp = {stopDrawing} onMouseDown={startDrawing}>
         {this.renderRectangularBoard(global.N, global.M)}
         </div>
       </div>

@@ -10,6 +10,10 @@
   background-color: rgb(248, 218, 161);
 }
 
+.currentEdgeColor {
+  background-color: rgb(252, 194, 88);
+}
+
 
 @media screen and (prefers-color-scheme: dark) {
 	.content, .spacer, .App-header, body, input {
